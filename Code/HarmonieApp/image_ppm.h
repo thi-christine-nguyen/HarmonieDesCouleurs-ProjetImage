@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
+#include <iostream>
 
 #define allocation_tableau(nom, type, nombre) \
 if( (nom = (type*) calloc (nombre, sizeof(type) ) ) == NULL ) \
@@ -285,3 +287,4 @@ void lire_image_pgm(char  nom_image[], OCTET *pt_image, int taille_image)
     }
 }
 /*===========================================================================*/
+

@@ -72,6 +72,32 @@
      <string>GenerateR</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="GenerateHSV">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>230</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>GenerateHSV</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="FindBestHarmonie">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>310</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>FindBestHarmonie</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

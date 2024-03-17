@@ -28,6 +28,8 @@ public:
     QLabel *ImgIn;
     QLabel *ImgOut;
     QPushButton *GenerateR;
+    QPushButton *GenerateHSV;
+    QPushButton *FindBestHarmonie;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -52,6 +54,12 @@ public:
         GenerateR = new QPushButton(centralwidget);
         GenerateR->setObjectName("GenerateR");
         GenerateR->setGeometry(QRect(350, 160, 80, 24));
+        GenerateHSV = new QPushButton(centralwidget);
+        GenerateHSV->setObjectName("GenerateHSV");
+        GenerateHSV->setGeometry(QRect(350, 230, 80, 24));
+        FindBestHarmonie = new QPushButton(centralwidget);
+        FindBestHarmonie->setObjectName("FindBestHarmonie");
+        FindBestHarmonie->setGeometry(QRect(350, 310, 80, 24));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -73,6 +81,8 @@ public:
         ImgIn->setText(QString());
         ImgOut->setText(QString());
         GenerateR->setText(QCoreApplication::translate("MainWindow", "GenerateR", nullptr));
+        GenerateHSV->setText(QCoreApplication::translate("MainWindow", "GenerateHSV", nullptr));
+        FindBestHarmonie->setText(QCoreApplication::translate("MainWindow", "FindBestHarmonie", nullptr));
     } // retranslateUi
 
 };

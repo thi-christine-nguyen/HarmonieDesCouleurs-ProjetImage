@@ -13,6 +13,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    convertisseur.h \
     image_ppm.h \
     mainwindow.h
 
