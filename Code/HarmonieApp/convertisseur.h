@@ -31,7 +31,6 @@ int sommeVoisinHSV(const std::vector<int>& histoHSV, int teinte) {
     int somme = 0;
     int voisins = 5; // Nombre de voisins à inclure de chaque côté de la teinte
 
-    // Assurez-vous que la teinte est dans la plage valide
     if (teinte >= 0 && teinte < histoHSV.size()) {
         // Parcours des voisins dans la plage spécifiée
         for (int i = std::max(0, teinte - voisins); i <= std::min((int)histoHSV.size() - 1, teinte + voisins); ++i) {
