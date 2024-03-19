@@ -7,32 +7,8 @@ int main(int argc, char* argv[])
 {
   char cNomImgLue[250], cNomImgEcrite[250];
   int nH, nW, nTaille;
-  
-  if (argc != 3) 
-     {
-       printf("Usage: ImageIn.ppm ImageOut.ppm\n"); 
-       exit (1) ;
-     }
-   
-   sscanf (argv[1],"%s",cNomImgLue) ;
-   sscanf (argv[2],"%s",cNomImgEcrite);
-
-   OCTET *ImgIn, *ImgOut;
-   
-   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
-   nTaille = nH * nW;
-  
-   int nTaille3 = nTaille * 3;
-   allocation_tableau(ImgIn, OCTET, nTaille3);
-   lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
-   allocation_tableau(ImgOut, OCTET, nTaille3);
-   for (int i=0; i < nTaille3; i+=3)
-     {
-        double R,G,B;
-        R = (double)ImgIn[i]/255;
-        G = (double)ImgIn[i+1]/255;
-        B = (double)ImgIn[i+2]/255;
-        double cmax = fmax(R,fmax(G,B));
+      void RGBtoHSV(std::vector<int,float,float>* HSV,OCTET R,OCTET G,OCTET B){
+      double cmax = fmax(R,fmax(G,B));
         double cmin = fmin(R,fmin(G,B));
         double delta = cmax - cmin;
         double H;
@@ -52,12 +28,45 @@ int main(int argc, char* argv[])
             S = 0;
         } else 
         S = delta/cmax;
-        ImgOut[i]= H;
-        ImgOut[i+1]= S*100;
-        ImgOut[i+2]= cmax*100;
-        printf(" S :  %d V : %d",ImgOut[i+1],ImgOut[i+2]);
-     }
+        //HSV.push_back(H,S,cmax);
+        HSV[i][0]= H;
+        HSV[i][1]= S;
+        HSV[i][2]= cmax;
 
+    }
+
+
+
+
+
+
+  if (argc != 3) 
+     {
+       printf("Usage: ImageIn.ppm ImageOut.ppm\n"); 
+       exit (1) ;
+     }
+   
+   sscanf (argv[1],"%s",cNomImgLue) ;
+   sscanf (argv[2],"%s",cNomImgEcrite);
+
+   OCTET *ImgIn, *ImgOut;
+   
+   lire_nb_lignes_colonnes_image_ppm(cNomImgLue, &nH, &nW);
+   nTaille = nH * nW;
+  
+   int nTaille3 = nTaille * 3;
+   allocation_tableau(ImgIn, OCTET, nTaille3);
+   lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
+   allocation_tableau(ImgOut, OCTET, nTaille3);
+   std::vector<int,float,float> HSV;
+   for (int i=0; i < nTaille3; i+=3)
+     {
+        double R,G,B;
+        R = (double)ImgIn[i]/255;
+        G = (double)ImgIn[i+1]/255;
+        B = (double)ImgIn[i+2]/255;
+        RGBtoHSV(&HSV,R,G,B);
+     }
    ecrire_image_ppm(cNomImgEcrite, ImgOut,  nH, nW);
    free(ImgIn);
    return 1;
