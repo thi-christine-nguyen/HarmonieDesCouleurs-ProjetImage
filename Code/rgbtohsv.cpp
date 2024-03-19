@@ -3,11 +3,17 @@
 #include <stdio.h>
 #include "image_ppm.h"
 #include "math.h"
-int main(int argc, char* argv[])
-{
-  char cNomImgLue[250], cNomImgEcrite[250];
-  int nH, nW, nTaille;
-      void RGBtoHSV(std::vector<int,float,float>* HSV,OCTET R,OCTET G,OCTET B){
+#include <vector>
+#include <cmath>
+std::vector<float> RGBtoHSV(int ntaille,OCTET* ImgIn){
+  std::vector<float> HSV;
+  for (int i=0; i < ntaille*3; i+=3)
+     {
+        double R,G,B;
+        R = (double)ImgIn[i]/255;
+        G = (double)ImgIn[i+1]/255;
+        B = (double)ImgIn[i+2]/255;
+     
       double cmax = fmax(R,fmax(G,B));
         double cmin = fmin(R,fmin(G,B));
         double delta = cmax - cmin;
@@ -28,13 +34,27 @@ int main(int argc, char* argv[])
             S = 0;
         } else 
         S = delta/cmax;
-        //HSV.push_back(H,S,cmax);
-        HSV[i][0]= H;
+        H = std::round(H);
+        HSV.push_back(H);
+        printf("H = %f",H);
+        HSV.push_back(S);
+        printf("*S = %f",S);
+        HSV.push_back(cmax);
+        printf("V = %f \n",cmax);
+      /*  HSV[i][0]= H;
         HSV[i][1]= S;
-        HSV[i][2]= cmax;
-
+        HSV[i][2]= cmax; */
+      }
+      return HSV;
     }
 
+
+
+int main(int argc, char* argv[])
+{
+  char cNomImgLue[250], cNomImgEcrite[250];
+  int nH, nW, nTaille;
+      
 
 
 
@@ -58,15 +78,8 @@ int main(int argc, char* argv[])
    allocation_tableau(ImgIn, OCTET, nTaille3);
    lire_image_ppm(cNomImgLue, ImgIn, nH * nW);
    allocation_tableau(ImgOut, OCTET, nTaille3);
-   std::vector<int,float,float> HSV;
-   for (int i=0; i < nTaille3; i+=3)
-     {
-        double R,G,B;
-        R = (double)ImgIn[i]/255;
-        G = (double)ImgIn[i+1]/255;
-        B = (double)ImgIn[i+2]/255;
-        RGBtoHSV(&HSV,R,G,B);
-     }
+   std::vector<float> HSV;
+   HSV = RGBtoHSV(nTaille,ImgIn);
    ecrire_image_ppm(cNomImgEcrite, ImgOut,  nH, nW);
    free(ImgIn);
    return 1;
