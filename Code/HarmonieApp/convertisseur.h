@@ -9,23 +9,21 @@
 #include <cmath>
 
 typedef unsigned char OCTET;
+typedef unsigned char OCTET;
 
-void generateHSV(OCTET *ImgIn, OCTET *ImgOut, int nH, int nW){
-
-    int nTaille = nH * nW;
-    int nTaille3 = nTaille * 3;
-
-    for (int i=0; i < nTaille3; i+=3)
+std::vector<float> RGBtoHSV(int ntaille,OCTET* ImgIn){
+    std::vector<float> HSV;
+    for (int i=0; i < ntaille*3; i+=3)
     {
         double R,G,B;
         R = (double)ImgIn[i]/255;
         G = (double)ImgIn[i+1]/255;
         B = (double)ImgIn[i+2]/255;
+
         double cmax = fmax(R,fmax(G,B));
         double cmin = fmin(R,fmin(G,B));
         double delta = cmax - cmin;
         double H = 0;
-
         if (delta == 0) {
             H = 0;
         } else if (cmax == R) {
@@ -37,32 +35,24 @@ void generateHSV(OCTET *ImgIn, OCTET *ImgOut, int nH, int nW){
         }
         if (H<0)
             H += 360;
-
         float S;
         if ( cmax ==0){
             S = 0;
         } else
             S = delta/cmax;
-
-        ImgOut[i]= H;
-        ImgOut[i+1]= S*100;
-        ImgOut[i+2]= cmax*100;
+        H = std::round(H);
+        HSV.push_back(H);
+        HSV.push_back(S);
+        HSV.push_back(cmax);
+        // std::cout << "H = " <<  H <<  "S = " <<  S <<  "V = " <<  cmax << std::endl;
 
     }
-
-
+    return HSV;
 }
 
+std::vector<int> getHistoHSV(std::vector<float> ImgIn, int nTaille3){
 
-std::vector<int> getHistoHSV(OCTET *ImgIn, int nTaille3){
-
-    std::vector<int> histogramme(256, 0);
-
-    // for (int i=0; i < nTaille3; i+=3){
-    //     int value = ImgIn[i];
-    //     std::cout << value << std::endl;
-    //     histogramme[value]++;
-    // }
+    std::vector<int> histogramme(nTaille3, 0);
 
     for(int i = 0; i < nTaille3; i+=3){
         int valeur = ImgIn[i];
@@ -85,6 +75,19 @@ int sommeVoisinHSV(const std::vector<int>& histoHSV, int teinte) {
     }
 
     return somme;
+}
+
+int teinte(const std::vector<int>& histoHSV){
+    int result = 0;
+    int value = 0;
+
+    for(int i = 0; i < histoHSV.size(); i++){
+        if (histoHSV[i] > value){
+            value = histoHSV[i];
+            result = i;
+        }
+    }
+    return result;
 }
 
 
@@ -114,36 +117,41 @@ void HSVtoRGB(float H, float S, float V, int *r, int *g, int *b) {
 }
 
 
-OCTET* findBestHarmonieCompl(const std::vector<int>& histoHSV, OCTET *ImgIn, int nTaille3) {
-    OCTET *ImgOut;
 
-    allocation_tableau(ImgOut, OCTET, nTaille3);
-
-    std::pair<int, int> mode = std::make_pair(0, 0);
-    for (int color = 0; color < histoHSV.size(); color++) {
-        int somme = sommeVoisinHSV(histoHSV, color);
-
-        if (somme > mode.second) {
-            mode = std::make_pair(color, somme);
-        }
-    }
+std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+    int t = teinte(histoHSV); // On pourra choisir la teinte à la main plus tard
 
     // On harmonise les couleurs de l'image
     for(int i = 0; i < nTaille3; i+=3){
-        ImgOut[i] = mode.first;
+        ImgOut[i] = t;
         ImgOut[i+1] = ImgIn[i+1];
         ImgOut[i+2] = ImgIn[i+2];
     }
 
-
     return ImgOut;
 }
 
+std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+    int t = teinte(histoHSV);
+    int complementaire =(t + 180) % 360;
 
+    // On harmonise les couleurs de l'image
+    for(int i = 0; i < nTaille3; i+=3){
+        if (std::abs(t - ImgIn[i]) < std::abs( complementaire - ImgIn[i])) {
+            ImgOut[i] = t;
+        } else {
+            ImgOut[i] = complementaire;
+        }
+        ImgOut[i+1] = ImgIn[i+1];
+        ImgOut[i+2] = ImgIn[i+2];
+    }
 
-
-
-
+    return ImgOut;
+}
 
 
 #endif // CONVERTISSEUR_H

@@ -41,19 +41,17 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "MainWindow",
     "on_Import_clicked",
     "",
-    "on_GenerateR_clicked",
-    "on_GenerateHSV_clicked",
-    "on_FindBestHarmonie_clicked"
+    "on_Monochromatique_clicked",
+    "on_Complementaire_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
-    uint offsetsAndSizes[12];
+    uint offsetsAndSizes[10];
     char stringdata0[11];
     char stringdata1[18];
     char stringdata2[1];
-    char stringdata3[21];
-    char stringdata4[23];
-    char stringdata5[28];
+    char stringdata3[27];
+    char stringdata4[26];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -62,16 +60,14 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
         QT_MOC_LITERAL(0, 10),  // "MainWindow"
         QT_MOC_LITERAL(11, 17),  // "on_Import_clicked"
         QT_MOC_LITERAL(29, 0),  // ""
-        QT_MOC_LITERAL(30, 20),  // "on_GenerateR_clicked"
-        QT_MOC_LITERAL(51, 22),  // "on_GenerateHSV_clicked"
-        QT_MOC_LITERAL(74, 27)   // "on_FindBestHarmonie_clicked"
+        QT_MOC_LITERAL(30, 26),  // "on_Monochromatique_clicked"
+        QT_MOC_LITERAL(57, 25)   // "on_Complementaire_clicked"
     },
     "MainWindow",
     "on_Import_clicked",
     "",
-    "on_GenerateR_clicked",
-    "on_GenerateHSV_clicked",
-    "on_FindBestHarmonie_clicked"
+    "on_Monochromatique_clicked",
+    "on_Complementaire_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -83,7 +79,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -91,13 +87,11 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   38,    2, 0x08,    1 /* Private */,
-       3,    0,   39,    2, 0x08,    2 /* Private */,
-       4,    0,   40,    2, 0x08,    3 /* Private */,
-       5,    0,   41,    2, 0x08,    4 /* Private */,
+       1,    0,   32,    2, 0x08,    1 /* Private */,
+       3,    0,   33,    2, 0x08,    2 /* Private */,
+       4,    0,   34,    2, 0x08,    3 /* Private */,
 
  // slots: parameters
-    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -116,11 +110,9 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>,
         // method 'on_Import_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_GenerateR_clicked'
+        // method 'on_Monochromatique_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_GenerateHSV_clicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_FindBestHarmonie_clicked'
+        // method 'on_Complementaire_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -133,9 +125,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         (void)_t;
         switch (_id) {
         case 0: _t->on_Import_clicked(); break;
-        case 1: _t->on_GenerateR_clicked(); break;
-        case 2: _t->on_GenerateHSV_clicked(); break;
-        case 3: _t->on_FindBestHarmonie_clicked(); break;
+        case 1: _t->on_Monochromatique_clicked(); break;
+        case 2: _t->on_Complementaire_clicked(); break;
         default: ;
         }
     }
@@ -161,13 +152,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }

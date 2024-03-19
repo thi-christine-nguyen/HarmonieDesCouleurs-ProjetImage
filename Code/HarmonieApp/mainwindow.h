@@ -21,9 +21,9 @@ public:
 
 private slots:
     void on_Import_clicked();
-    void on_GenerateR_clicked();
-    void on_GenerateHSV_clicked();
-    void on_FindBestHarmonie_clicked();
+    void on_Monochromatique_clicked();
+
+    void on_Complementaire_clicked();
 
 private:
     Ui::MainWindow *ui;

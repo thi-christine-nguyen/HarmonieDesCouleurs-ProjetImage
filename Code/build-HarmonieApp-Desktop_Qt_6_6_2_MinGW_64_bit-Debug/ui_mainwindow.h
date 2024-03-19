@@ -27,9 +27,8 @@ public:
     QPushButton *Import;
     QLabel *ImgIn;
     QLabel *ImgOut;
-    QPushButton *GenerateR;
-    QPushButton *GenerateHSV;
-    QPushButton *FindBestHarmonie;
+    QPushButton *Monochromatique;
+    QPushButton *Complementaire;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -51,15 +50,12 @@ public:
         ImgOut->setObjectName("ImgOut");
         ImgOut->setGeometry(QRect(460, 70, 301, 331));
         ImgOut->setFrameShape(QFrame::Box);
-        GenerateR = new QPushButton(centralwidget);
-        GenerateR->setObjectName("GenerateR");
-        GenerateR->setGeometry(QRect(350, 160, 80, 24));
-        GenerateHSV = new QPushButton(centralwidget);
-        GenerateHSV->setObjectName("GenerateHSV");
-        GenerateHSV->setGeometry(QRect(350, 230, 80, 24));
-        FindBestHarmonie = new QPushButton(centralwidget);
-        FindBestHarmonie->setObjectName("FindBestHarmonie");
-        FindBestHarmonie->setGeometry(QRect(350, 310, 80, 24));
+        Monochromatique = new QPushButton(centralwidget);
+        Monochromatique->setObjectName("Monochromatique");
+        Monochromatique->setGeometry(QRect(340, 100, 111, 31));
+        Complementaire = new QPushButton(centralwidget);
+        Complementaire->setObjectName("Complementaire");
+        Complementaire->setGeometry(QRect(340, 150, 111, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -80,9 +76,8 @@ public:
         Import->setText(QCoreApplication::translate("MainWindow", "Import", nullptr));
         ImgIn->setText(QString());
         ImgOut->setText(QString());
-        GenerateR->setText(QCoreApplication::translate("MainWindow", "GenerateR", nullptr));
-        GenerateHSV->setText(QCoreApplication::translate("MainWindow", "GenerateHSV", nullptr));
-        FindBestHarmonie->setText(QCoreApplication::translate("MainWindow", "FindBestHarmonie", nullptr));
+        Monochromatique->setText(QCoreApplication::translate("MainWindow", "Monochromatique", nullptr));
+        Complementaire->setText(QCoreApplication::translate("MainWindow", "Complementaire", nullptr));
     } // retranslateUi
 
 };

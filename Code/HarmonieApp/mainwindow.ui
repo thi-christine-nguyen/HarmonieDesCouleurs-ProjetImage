@@ -59,43 +59,30 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="GenerateR">
+   <widget class="QPushButton" name="Monochromatique">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>160</y>
-      <width>80</width>
-      <height>24</height>
+      <x>340</x>
+      <y>100</y>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>GenerateR</string>
+     <string>Monochromatique</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="GenerateHSV">
+   <widget class="QPushButton" name="Complementaire">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>230</y>
-      <width>80</width>
-      <height>24</height>
+      <x>340</x>
+      <y>150</y>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>GenerateHSV</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="FindBestHarmonie">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>310</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>FindBestHarmonie</string>
+     <string>Complementaire</string>
     </property>
    </widget>
   </widget>
