@@ -6,6 +6,52 @@
 #include <string.h>
 #include <vector>
 #include <iostream>
+#include <cmath>
+
+typedef unsigned char OCTET;
+
+void generateHSV(OCTET *ImgIn, OCTET *ImgOut, int nH, int nW){
+
+    int nTaille = nH * nW;
+    int nTaille3 = nTaille * 3;
+
+    for (int i=0; i < nTaille3; i+=3)
+    {
+        double R,G,B;
+        R = (double)ImgIn[i]/255;
+        G = (double)ImgIn[i+1]/255;
+        B = (double)ImgIn[i+2]/255;
+        double cmax = fmax(R,fmax(G,B));
+        double cmin = fmin(R,fmin(G,B));
+        double delta = cmax - cmin;
+        double H = 0;
+
+        if (delta == 0) {
+            H = 0;
+        } else if (cmax == R) {
+            H = 60 * ((G - B) / delta);
+        } else if (cmax == G) {
+            H = 60 * (((B - R) / delta) + 2);
+        } else if (cmax == B) {
+            H = 60 * (((R - G) / delta) + 4);
+        }
+        if (H<0)
+            H += 360;
+
+        float S;
+        if ( cmax ==0){
+            S = 0;
+        } else
+            S = delta/cmax;
+
+        ImgOut[i]= H;
+        ImgOut[i+1]= S*100;
+        ImgOut[i+2]= cmax*100;
+
+    }
+
+
+}
 
 
 std::vector<int> getHistoHSV(OCTET *ImgIn, int nTaille3){

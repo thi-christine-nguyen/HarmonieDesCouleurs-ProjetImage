@@ -10,6 +10,8 @@
 #include <vector>
 #include <iostream>
 
+typedef unsigned char OCTET;
+
 #define allocation_tableau(nom, type, nombre) \
 if( (nom = (type*) calloc (nombre, sizeof(type) ) ) == NULL ) \
     {\
@@ -17,7 +19,6 @@ if( (nom = (type*) calloc (nombre, sizeof(type) ) ) == NULL ) \
             exit(1);\
     }
 
-typedef unsigned char OCTET;
 
 /*===========================================================================*/
 void ignorer_commentaires(FILE * f)

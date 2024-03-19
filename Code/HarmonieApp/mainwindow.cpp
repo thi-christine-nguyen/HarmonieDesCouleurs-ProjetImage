@@ -81,6 +81,7 @@ void MainWindow::on_GenerateR_clicked()
 
 }
 
+
 void MainWindow::on_GenerateHSV_clicked(){
 
     int nH, nW, nTaille;
@@ -153,7 +154,7 @@ void MainWindow::on_FindBestHarmonie_clicked()
 
     int nH, nW, nTaille;
 
-    OCTET *ImgIn, *ImgOutInter, *ImgOut, *ImgHsvRgb;
+    OCTET *ImgIn, *ImgOutHSV, *ImgOut, *ImgHsvRgb;
 
     char nom_image[ImgInPath.length() + 1];
     strcpy(nom_image, ImgInPath.toUtf8().constData());
@@ -164,58 +165,26 @@ void MainWindow::on_FindBestHarmonie_clicked()
     int nTaille3 = nTaille * 3;
     allocation_tableau(ImgIn, OCTET, nTaille3);
     lire_image_ppm(nom_image, ImgIn, nH * nW);
-    allocation_tableau(ImgOutInter, OCTET, nTaille3);
+    allocation_tableau(ImgOutHSV, OCTET, nTaille3);
     allocation_tableau(ImgHsvRgb, OCTET, nTaille3);
 
-    for (int i=0; i < nTaille3; i+=3)
-    {
-        double R,G,B;
-        R = (double)ImgIn[i]/255;
-        G = (double)ImgIn[i+1]/255;
-        B = (double)ImgIn[i+2]/255;
-        double cmax = fmax(R,fmax(G,B));
-        double cmin = fmin(R,fmin(G,B));
-        double delta = cmax - cmin;
-        double H = 0;
+    generateHSV(ImgIn, ImgOutHSV, nH, nW);
 
-        if (delta == 0) {
-            H = 0;
-        } else if (cmax == R) {
-            H = 60 * ((G - B) / delta);
-        } else if (cmax == G) {
-            H = 60 * (((B - R) / delta) + 2);
-        } else if (cmax == B) {
-            H = 60 * (((R - G) / delta) + 4);
-        }
-        if (H<0)
-            H += 360;
-
-        float S;
-        if ( cmax ==0){
-            S = 0;
-        } else
-            S = delta/cmax;
-
-        ImgOutInter[i]= H;
-        ImgOutInter[i+1]= S*100;
-        ImgOutInter[i+2]= cmax*100;
-
-    }
-
-    std::vector<int> histogramme = getHistoHSV(ImgOutInter, nTaille3);
+    std::vector<int> histogramme = getHistoHSV(ImgOutHSV, nTaille3);
 
     ImgOut = findBestHarmonieCompl(histogramme, ImgIn, nTaille3);
 
-    // for (int i = 0; i < nTaille3; i += 3) {
-    //     int R, G, B;
-    //     float H = ImgOut[i];
-    //     float S = ImgOut[i+1] / 100.0;
-    //     float V = ImgOut[i+2] / 100.0;
-    //     HSVtoRGB(H, S, V, &R, &G, &B);
-    //     ImgHsvRgb[i] = R;
-    //     ImgHsvRgb[i+1] = G;
-    //     ImgHsvRgb[i+2] = B;
+    // for(int i = 0; i < nTaille; i+=3){
+    //     int r = 0;
+    //     int g = 0;
+    //     int b = 0;
+    //     HSVtoRGB(ImgOut[i], ImgOut[i+1], ImgOut[i+2], &r, &g, &b);
+    //     ImgHsvRgb[i] = r;
+    //     ImgHsvRgb[i+1] = g;
+    //     ImgHsvRgb[i+2] = b;
+
     // }
+
 
     char nomImgOut[] = "ImgOut";
 
@@ -228,4 +197,6 @@ void MainWindow::on_FindBestHarmonie_clicked()
 
 
 }
+
+
 
