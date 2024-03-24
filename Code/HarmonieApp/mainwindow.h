@@ -25,6 +25,8 @@ private slots:
 
     void on_Complementaire_clicked();
 
+    void on_Triadique_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

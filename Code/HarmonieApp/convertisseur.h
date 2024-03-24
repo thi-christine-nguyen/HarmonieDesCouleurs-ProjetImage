@@ -126,7 +126,7 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
     // On harmonise les couleurs de l'image
     for(int i = 0; i < nTaille3; i+=3){
         ImgOut[i] = t;
-        ImgOut[i+1] = ImgIn[i+1];
+        ImgOut[i+1] = 0.5;
         ImgOut[i+2] = ImgIn[i+2];
     }
 
@@ -136,19 +136,62 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
 std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
-    int t = teinte(histoHSV);
-    int complementaire =(t + 180) % 360;
 
-    // On harmonise les couleurs de l'image
-    for(int i = 0; i < nTaille3; i+=3){
-        if (std::abs(t - ImgIn[i]) < std::abs( complementaire - ImgIn[i])) {
-            ImgOut[i] = t;
-        } else {
-            ImgOut[i] = complementaire;
-        }
-        ImgOut[i+1] = ImgIn[i+1];
-        ImgOut[i+2] = ImgIn[i+2];
+    int t = teinte(histoHSV);
+    int complementary_t = (t + 180) % 360; // Calculer la couleur complémentaire
+
+    // Calculer la différence de teinte entre chaque pixel et la teinte dominante
+    std::vector<int> delta_t(nTaille3 / 3);
+    for (int i = 0; i < nTaille3; i += 3) {
+        delta_t[i / 3] = std::abs(static_cast<int>(ImgIn[i]) - t);
     }
+
+    // Utiliser la couleur dominante pour les pixels dont la différence de teinte est inférieure à 90,
+    // et la couleur complémentaire sinon
+    for (int i = 0; i < nTaille3; i += 3) {
+        if (delta_t[i / 3] < 90) {
+            ImgOut[i] = t; // Teinte dominante
+        } else {
+            ImgOut[i] = complementary_t; // Teinte complémentaire
+        }
+        ImgOut[i+1] = 0.5;
+        ImgOut[i+2] = ImgIn[i+2]; // Conserver la luminance
+    }
+
+    return ImgOut;
+}
+
+std::vector<float> findBestHarmonieTri(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+
+    int t = teinte(histoHSV);
+    t = 39;
+    int tri1 = (t + 120) % 360;
+    int tri2 = (t + 240) % 360;
+
+    for(int i = 0 ; i < nTaille3; i+=3){
+        float distT = std::abs(t - ImgIn[i]);
+        float distT1 = std::abs(tri1 - ImgIn[i]);
+        float distT2 = std::abs(tri2 - ImgIn[i]);
+
+
+        int selected_triad;
+        if (distT < distT1 && distT < distT2) {
+            selected_triad = t;
+        } else if (distT1 < distT && distT1 < distT2) {
+            selected_triad = tri1;
+        } else {
+            selected_triad = tri2;
+        }
+
+        ImgOut[i] = selected_triad;
+        ImgOut[i + 1] = 0.5;
+        ImgOut[i + 2] = ImgIn[i + 2];
+
+    }
+
+
 
     return ImgOut;
 }
