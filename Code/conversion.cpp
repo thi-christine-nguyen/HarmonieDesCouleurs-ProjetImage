@@ -20,7 +20,7 @@ void ToPPM(const std::string &inputPath, const std::string &outputPath) {
 void PPMtoJPEG(const std::string& inputPath, const std::string& outputPath) {
     cv::Mat image = cv::imread(inputPath, cv::IMREAD_COLOR);
     if (image.empty()) {
-        std::cerr << "Erreur : Impossible de lire l'image - " << inputPath << std::endl;
+        std::cerr << "Impossible de lire l'image" << inputPath << std::endl;
         return;
     }
     std::string outputJPEGPath = outputPath;
@@ -30,8 +30,8 @@ void PPMtoJPEG(const std::string& inputPath, const std::string& outputPath) {
     compression_params.push_back(95);
     bool success = cv::imwrite(outputJPEGPath, image, compression_params);
     if (!success) {
-        std::cerr << "Erreur lors de l'enregistrement de l'image au format JPEG." << std::endl;
+        std::cerr << "Erreur Jpeg" << std::endl;
     } else {
-        std::cout << "Image convertie et sauvegardée en JPEG avec succès : " << outputJPEGPath << std::endl;
+        std::cout << "Succès" << outputJPEGPath << std::endl;
     }
 }
