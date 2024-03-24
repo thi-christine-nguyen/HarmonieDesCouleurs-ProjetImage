@@ -27,6 +27,8 @@ private slots:
 
     void on_Triadique_clicked();
 
+    void on_Analogue_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

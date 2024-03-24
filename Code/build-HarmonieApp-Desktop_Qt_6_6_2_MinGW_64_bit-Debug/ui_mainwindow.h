@@ -30,6 +30,7 @@ public:
     QPushButton *Monochromatique;
     QPushButton *Complementaire;
     QPushButton *Triadique;
+    QPushButton *Analogue;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -60,6 +61,9 @@ public:
         Triadique = new QPushButton(centralwidget);
         Triadique->setObjectName("Triadique");
         Triadique->setGeometry(QRect(340, 200, 111, 31));
+        Analogue = new QPushButton(centralwidget);
+        Analogue->setObjectName("Analogue");
+        Analogue->setGeometry(QRect(340, 250, 111, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -83,6 +87,7 @@ public:
         Monochromatique->setText(QCoreApplication::translate("MainWindow", "Monochromatique", nullptr));
         Complementaire->setText(QCoreApplication::translate("MainWindow", "Complementaire", nullptr));
         Triadique->setText(QCoreApplication::translate("MainWindow", "Triadique", nullptr));
+        Analogue->setText(QCoreApplication::translate("MainWindow", "Analogue", nullptr));
     } // retranslateUi
 
 };

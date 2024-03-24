@@ -138,6 +138,7 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
     ImgOut.resize(nTaille3);
 
     int t = teinte(histoHSV);
+    // t = 39;
     int complementary_t = (t + 180) % 360; // Calculer la couleur complémentaire
 
     // Calculer la différence de teinte entre chaque pixel et la teinte dominante
@@ -166,14 +167,14 @@ std::vector<float> findBestHarmonieTri(const std::vector<int>& histoHSV, std::ve
     ImgOut.resize(nTaille3);
 
     int t = teinte(histoHSV);
-    t = 39;
+    // t = 39;
     int tri1 = (t + 120) % 360;
     int tri2 = (t + 240) % 360;
 
     for(int i = 0 ; i < nTaille3; i+=3){
-        float distT = std::abs(t - ImgIn[i]);
-        float distT1 = std::abs(tri1 - ImgIn[i]);
-        float distT2 = std::abs(tri2 - ImgIn[i]);
+        float distT = std::abs(static_cast<int>(ImgIn[i]) - t);
+        float distT1 = std::abs(static_cast<int>(ImgIn[i]) - tri1);
+        float distT2 = std::abs(static_cast<int>(ImgIn[i]) - tri2);
 
 
         int selected_triad;
@@ -191,6 +192,37 @@ std::vector<float> findBestHarmonieTri(const std::vector<int>& histoHSV, std::ve
 
     }
 
+
+
+    return ImgOut;
+}
+
+std::vector<float> findBestHarmonieAnalogue(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+
+    int t = teinte(histoHSV);
+
+    int analog1 = (t + 30) % 360;
+    int analog2 = (t + 330) % 360;
+
+    for(int i = 0 ; i < nTaille3; i+=3){
+        int delta_t1 = std::abs(static_cast<int>(ImgIn[i]) - analog1);
+        int delta_t2 = std::abs(static_cast<int>(ImgIn[i]) - analog2);
+
+        int selected_analog;
+        if (delta_t1 < delta_t2) {
+            selected_analog = analog1;
+        } else {
+            selected_analog = analog2;
+        }
+
+        // Remplacer les valeurs de pixel par la teinte analogue sélectionnée
+        ImgOut[i] = selected_analog;
+        ImgOut[i + 1] = 0.5; // Saturation à 0.5
+        ImgOut[i + 2] = ImgIn[i + 2]; // Conserver la luminance
+
+    }
 
 
     return ImgOut;
