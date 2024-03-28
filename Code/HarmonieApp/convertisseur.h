@@ -135,15 +135,15 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
 std::vector<float>choosedMono(int couleur, std::vector<float> ImgIn, int nTaille3) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
-    int t = couleur;
+    int t = couleur; // On pourra choisir la teinte à la main plus tard
+
+    // On harmonise les couleurs de l'image
     for(int i = 0; i < nTaille3; i+=3){
-        float delta_t = std::abs(ImgIn[i] - t);
-        float factor = std::min(delta_t / 90.0f, 1.0f);
-        float hueInterpolation = t + factor * ((t + 180) % 360 - t);
-        ImgOut[i] = hueInterpolation;
+        ImgOut[i] = t;
         ImgOut[i+1] = 0.5;
         ImgOut[i+2] = ImgIn[i+2];
     }
+
     return ImgOut;
 }
 
