@@ -132,6 +132,21 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
 
     return ImgOut;
 }
+std::vector<float>choosedMono(int couleur, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+    int t = couleur; // On pourra choisir la teinte à la main plus tard
+
+    // On harmonise les couleurs de l'image
+    for(int i = 0; i < nTaille3; i+=3){
+        ImgOut[i] = t;
+        ImgOut[i+1] = 0.5;
+        ImgOut[i+2] = ImgIn[i+2];
+    }
+
+    return ImgOut;
+}
+
 
 std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
     std::vector<float> ImgOut;
@@ -157,6 +172,91 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
         }
         ImgOut[i+1] = 0.5;
         ImgOut[i+2] = ImgIn[i+2]; // Conserver la luminance
+    }
+
+    return ImgOut;
+}
+std::vector<float> choosedCompl(int couleur, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+    int t = couleur;
+    int complementary_t = (t + 180) % 360;
+    std::vector<float> delta_t(nTaille3 / 3);
+    for (int i = 0; i < nTaille3; i += 3) {
+        delta_t[i / 3] = static_cast<float>(std::abs(static_cast<int>(ImgIn[i]) - t));
+    }
+    for (int i = 0; i < nTaille3; i += 3) {
+        if (delta_t[i / 3] < 90) {
+            float factor = delta_t[i / 3] / 90.0f;
+            float hueInterpolation = t + factor * (complementary_t - t);
+            ImgOut[i] = hueInterpolation;
+        } else {
+            ImgOut[i] = complementary_t;
+        }
+        ImgOut[i+1] = 0.5;
+        ImgOut[i+2] = ImgIn[i+2];
+    }
+    return ImgOut;
+}
+
+std::vector<float> choosedHarmonieTri(int couleur, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+
+    int t = couleur;
+    int tri1 = (t + 120) % 360;
+    int tri2 = (t + 240) % 360;
+
+    for(int i = 0 ; i < nTaille3; i+=3){
+        float distT = std::abs(ImgIn[i] - t);
+        float distT1 = std::abs(ImgIn[i] - tri1);
+        float distT2 = std::abs(ImgIn[i] - tri2);
+
+        float factorT = std::min(distT / 90.0f, 1.0f);
+        float factorT1 = std::min(distT1 / 90.0f, 1.0f);
+        float factorT2 = std::min(distT2 / 90.0f, 1.0f);
+
+        float hueInterpolation;
+        if (distT < distT1 && distT < distT2) {
+            hueInterpolation = t + factorT * ((t + 180) % 360 - t);
+        } else if (distT1 < distT && distT1 < distT2) {
+            hueInterpolation = tri1 + factorT1 * ((tri1 + 180) % 360 - tri1);
+        } else {
+            hueInterpolation = tri2 + factorT2 * ((tri2 + 180) % 360 - tri2);
+        }
+
+        ImgOut[i] = hueInterpolation;
+        ImgOut[i + 1] = 0.5;
+        ImgOut[i + 2] = ImgIn[i + 2];
+    }
+
+    return ImgOut;
+}
+std::vector<float> choosedHarmonieAnalogue(int couleur, std::vector<float> ImgIn, int nTaille3) {
+    std::vector<float> ImgOut;
+    ImgOut.resize(nTaille3);
+
+    int t = couleur;
+    int analog1 = (t + 30) % 360;
+    int analog2 = (t + 330) % 360;
+
+    for(int i = 0 ; i < nTaille3; i+=3){
+        float delta_t1 = std::abs(ImgIn[i] - analog1);
+        float delta_t2 = std::abs(ImgIn[i] - analog2);
+
+        float factorT1 = std::min(delta_t1 / 45.0f, 1.0f);
+        float factorT2 = std::min(delta_t2 / 45.0f, 1.0f);
+
+        float hueInterpolation;
+        if (delta_t1 < delta_t2) {
+            hueInterpolation = analog1 + factorT1 * ((analog1 + 180) % 360 - analog1);
+        } else {
+            hueInterpolation = analog2 + factorT2 * ((analog2 + 180) % 360 - analog2);
+        }
+
+        ImgOut[i] = hueInterpolation;
+        ImgOut[i + 1] = 0.5;
+        ImgOut[i + 2] = ImgIn[i + 2];
     }
 
     return ImgOut;
