@@ -31,7 +31,7 @@ public:
     QPushButton *Complementaire;
     QPushButton *Triadique;
     QPushButton *Analogue;
-    QPushButton *PPM;
+    QPushButton *Selectioncourleur;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -65,9 +65,9 @@ public:
         Analogue = new QPushButton(centralwidget);
         Analogue->setObjectName("Analogue");
         Analogue->setGeometry(QRect(340, 250, 111, 31));
-        PPM = new QPushButton(centralwidget);
-        PPM->setObjectName("PPM");
-        PPM->setGeometry(QRect(340, 300, 111, 31));
+        Selectioncourleur = new QPushButton(centralwidget);
+        Selectioncourleur->setObjectName("Selectioncourleur");
+        Selectioncourleur->setGeometry(QRect(340, 300, 111, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -92,7 +92,7 @@ public:
         Complementaire->setText(QCoreApplication::translate("MainWindow", "Complementaire", nullptr));
         Triadique->setText(QCoreApplication::translate("MainWindow", "Triadique", nullptr));
         Analogue->setText(QCoreApplication::translate("MainWindow", "Analogue", nullptr));
-        PPM->setText(QCoreApplication::translate("MainWindow", "PPM", nullptr));
+        Selectioncourleur->setText(QCoreApplication::translate("MainWindow", "Selection couleur", nullptr));
     } // retranslateUi
 
 };

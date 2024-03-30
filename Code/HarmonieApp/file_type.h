@@ -14,14 +14,18 @@ void ToPPM(const std::string &inputPath, const std::string &outputPath) {
     std::string outputPPMPath = outputPath;
     outputPPMPath += ".ppm";
 
-    bool success = cv::imwrite(outputPPMPath, image);
 
+    bool success = cv::imwrite(outputPPMPath, image);
     if (!success) {
         std::cerr << "Erreur" << std::endl;
     } else {
         std::cout << "Succès" << outputPPMPath << std::endl;
+
     }
 }
+
+
+
 void PPMtoJPEG(const std::string& inputPath, const std::string& outputPath) {
     cv::Mat image = cv::imread(inputPath, cv::IMREAD_COLOR);
     if (image.empty()) {

@@ -4,6 +4,9 @@
 #include "convertisseur.h"
 #include "file_type.h"
 #include <QFileDialog>
+#include <QColorDialog>
+#include <QColor>
+#include <QPalette>
 #include <QMessageBox>
 #include <QDir>
 #include <QImageReader>
@@ -12,6 +15,7 @@
 #include <iostream>
 
 QString ImgInPath;
+std::vector<int> rgbColorChosen = {255, 0, 0};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -32,13 +36,20 @@ void MainWindow::on_Import_clicked()
     // Ouverture sur le dossier home
     QString fileName = QFileDialog::getOpenFileName(this, "Import", QDir::homePath());
 
-    ImgInPath = fileName;
-    QString ImgOut = "ImgOut.ppm";
 
-    ToPPM(fileName.toStdString(), ImgOut.toStdString());
-    ImgInPath = ImgOut;
+    QFileInfo fileInfo(fileName);
+    if(fileInfo.suffix() == "ppm"){
+        ImgInPath = fileName;
+    }else{
+        QString ImgOutConvert = "ImgIn";
+        ToPPM(fileName.toStdString(), ImgOutConvert.toStdString());
 
-    ui->ImgIn->setPixmap( QPixmap( ImgOut ) );
+        QFileInfo fileInfoConvert(ImgOutConvert);
+        ImgInPath = fileInfoConvert.absoluteFilePath();
+        ImgInPath += ".ppm";
+    }
+
+    ui->ImgIn->setPixmap( QPixmap( fileName ) );
     ui->ImgIn->setScaledContents( true );
     ui->ImgIn->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
@@ -54,7 +65,9 @@ void MainWindow::on_Monochromatique_clicked()
     char nom_image[ImgInPath.length() + 1];
     strcpy(nom_image, ImgInPath.toUtf8().constData());
 
+
     lire_nb_lignes_colonnes_image_ppm(nom_image, &nH, &nW);
+
     nTaille = nH * nW;
 
     int nTaille3 = nTaille * 3;
@@ -257,5 +270,51 @@ void MainWindow::on_Analogue_clicked()
     ui->ImgOut->setScaledContents( true );
     ui->ImgOut->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 }
+
+
+
+void MainWindow::on_Selectioncourleur_clicked()
+{
+
+    QColor colorValue = QColorDialog::getColor(Qt::white, this, tr("Select Color"));
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

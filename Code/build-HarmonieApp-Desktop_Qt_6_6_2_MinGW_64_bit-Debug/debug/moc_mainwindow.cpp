@@ -45,7 +45,7 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "on_Complementaire_clicked",
     "on_Triadique_clicked",
     "on_Analogue_clicked",
-    "on_PPM_clicked"
+    "on_Selectioncourleur_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
@@ -57,7 +57,7 @@ struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
     char stringdata4[26];
     char stringdata5[21];
     char stringdata6[20];
-    char stringdata7[15];
+    char stringdata7[29];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -70,7 +70,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
         QT_MOC_LITERAL(57, 25),  // "on_Complementaire_clicked"
         QT_MOC_LITERAL(83, 20),  // "on_Triadique_clicked"
         QT_MOC_LITERAL(104, 19),  // "on_Analogue_clicked"
-        QT_MOC_LITERAL(124, 14)   // "on_PPM_clicked"
+        QT_MOC_LITERAL(124, 28)   // "on_Selectioncourleur_clicked"
     },
     "MainWindow",
     "on_Import_clicked",
@@ -79,7 +79,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
     "on_Complementaire_clicked",
     "on_Triadique_clicked",
     "on_Analogue_clicked",
-    "on_PPM_clicked"
+    "on_Selectioncourleur_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -136,7 +136,7 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_Analogue_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_PPM_clicked'
+        // method 'on_Selectioncourleur_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -153,7 +153,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->on_Complementaire_clicked(); break;
         case 3: _t->on_Triadique_clicked(); break;
         case 4: _t->on_Analogue_clicked(); break;
-        case 5: _t->on_PPM_clicked(); break;
+        case 5: _t->on_Selectioncourleur_clicked(); break;
         default: ;
         }
     }
