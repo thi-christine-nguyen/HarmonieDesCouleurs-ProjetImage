@@ -13,7 +13,9 @@ void ToPPM(const std::string &inputPath, const std::string &outputPath) {
     }
     std::string outputPPMPath = outputPath;
     outputPPMPath += ".ppm";
+
     bool success = cv::imwrite(outputPPMPath, image);
+
     if (!success) {
         std::cerr << "Erreur" << std::endl;
     } else {

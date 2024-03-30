@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "image_ppm.h"
 #include "convertisseur.h"
+#include "file_type.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
@@ -31,11 +32,13 @@ void MainWindow::on_Import_clicked()
     // Ouverture sur le dossier home
     QString fileName = QFileDialog::getOpenFileName(this, "Import", QDir::homePath());
 
-
-
     ImgInPath = fileName;
+    QString ImgOut = "ImgOut.ppm";
 
-    ui->ImgIn->setPixmap( QPixmap( fileName ) );
+    ToPPM(fileName.toStdString(), ImgOut.toStdString());
+    ImgInPath = ImgOut;
+
+    ui->ImgIn->setPixmap( QPixmap( ImgOut ) );
     ui->ImgIn->setScaledContents( true );
     ui->ImgIn->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 
@@ -254,3 +257,5 @@ void MainWindow::on_Analogue_clicked()
     ui->ImgOut->setScaledContents( true );
     ui->ImgOut->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
 }
+
+

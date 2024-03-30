@@ -29,6 +29,8 @@ private slots:
 
     void on_Analogue_clicked();
 
+    void on_PPM_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
