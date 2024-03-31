@@ -15,7 +15,7 @@
 #include <iostream>
 
 QString ImgInPath;
-std::vector<int> rgbColorChosen = {255, 0, 0};
+QColor colorValue;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,7 +35,7 @@ void MainWindow::on_Import_clicked()
 {
     // Ouverture sur le dossier home
     QString fileName = QFileDialog::getOpenFileName(this, "Import", QDir::homePath());
-
+    colorValue.setHsv(0, 0, 0);
 
     QFileInfo fileInfo(fileName);
     if(fileInfo.suffix() == "ppm"){
@@ -64,8 +64,6 @@ void MainWindow::on_Monochromatique_clicked()
 
     char nom_image[ImgInPath.length() + 1];
     strcpy(nom_image, ImgInPath.toUtf8().constData());
-
-
     lire_nb_lignes_colonnes_image_ppm(nom_image, &nH, &nW);
 
     nTaille = nH * nW;
@@ -84,7 +82,7 @@ void MainWindow::on_Monochromatique_clicked()
 
     std::vector<float> harmonie;
 
-    harmonie = findBestHarmonieMono(histogramme, ImgOutHSV, nTaille3);
+    harmonie = findBestHarmonieMono(histogramme, ImgOutHSV, nTaille3, colorValue);
 
     for(int i = 0; i < harmonie.size(); i+=3){
         int r;
@@ -117,6 +115,7 @@ void MainWindow::on_Monochromatique_clicked()
 
 void MainWindow::on_Complementaire_clicked()
 {
+
     int nH, nW, nTaille;
 
     OCTET *ImgIn, *ImgHsvRgb;
@@ -140,7 +139,9 @@ void MainWindow::on_Complementaire_clicked()
 
     std::vector<float> harmonie;
 
-    harmonie = findBestHarmonieCompl(histogramme, ImgOutHSV, nTaille3);
+    // harmonie = findBestHarmonieCompl(histogramme, ImgOutHSV, nTaille3);
+    harmonie = choosedCompl(histogramme, ImgOutHSV, nTaille3, colorValue);
+
 
     for(int i = 0; i < harmonie.size(); i+=3){
         int r;
@@ -192,7 +193,7 @@ void MainWindow::on_Triadique_clicked()
 
     std::vector<float> harmonie;
 
-    harmonie = findBestHarmonieTri(histogramme, ImgOutHSV, nTaille3);
+    harmonie = choosedHarmonieTri(histogramme, ImgOutHSV, nTaille3, colorValue);
 
     for(int i = 0; i < harmonie.size(); i+=3){
         int r;
@@ -245,7 +246,7 @@ void MainWindow::on_Analogue_clicked()
 
     std::vector<float> harmonie;
 
-    harmonie = findBestHarmonieAnalogue(histogramme, ImgOutHSV, nTaille3);
+    harmonie = choosedHarmonieAnalogue(histogramme, ImgOutHSV, nTaille3, colorValue);
 
     for(int i = 0; i < harmonie.size(); i+=3){
         int r;
@@ -275,9 +276,7 @@ void MainWindow::on_Analogue_clicked()
 
 void MainWindow::on_Selectioncourleur_clicked()
 {
-
-    QColor colorValue = QColorDialog::getColor(Qt::white, this, tr("Select Color"));
-
+    colorValue = QColorDialog::getColor(Qt::white, this, tr("Select Color"));
 }
 
 

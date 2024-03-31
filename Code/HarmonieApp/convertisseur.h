@@ -7,6 +7,9 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <QColorDialog>
+#include <QColor>
+#include <QPalette>
 
 typedef unsigned char OCTET;
 typedef unsigned char OCTET;
@@ -118,31 +121,29 @@ void HSVtoRGB(float H, float S, float V, int *r, int *g, int *b) {
 
 
 
-std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
+std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
-    int t = teinte(histoHSV); // On pourra choisir la teinte à la main plus tard
 
-    // On harmonise les couleurs de l'image
-    for(int i = 0; i < nTaille3; i+=3){
-        ImgOut[i] = t;
-        ImgOut[i+1] = 0.5;
-        ImgOut[i+2] = ImgIn[i+2];
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        std::cout << "hehe" << std::endl;
+        int t = teinte(histoHSV);
+        for(int i = 0; i < nTaille3; i+=3){
+            ImgOut[i] = t;
+            ImgOut[i+1] = 0.5;
+            ImgOut[i+2] = ImgIn[i+2];
+        }
+    }else{
+        std::cout << "haha" << std::endl;
+        for(int i = 0; i < nTaille3; i+=3){
+            ImgOut[i] = colorValue.hue();
+            ImgOut[i+1] = 0.5;
+            ImgOut[i+2] = ImgIn[i+2];
+        }
+
     }
 
-    return ImgOut;
-}
-std::vector<float>choosedMono(int couleur, std::vector<float> ImgIn, int nTaille3) {
-    std::vector<float> ImgOut;
-    ImgOut.resize(nTaille3);
-    int t = couleur; // On pourra choisir la teinte à la main plus tard
 
-    // On harmonise les couleurs de l'image
-    for(int i = 0; i < nTaille3; i+=3){
-        ImgOut[i] = t;
-        ImgOut[i+1] = 0.5;
-        ImgOut[i+2] = ImgIn[i+2];
-    }
 
     return ImgOut;
 }
@@ -176,10 +177,18 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
 
     return ImgOut;
 }
-std::vector<float> choosedCompl(int couleur, std::vector<float> ImgIn, int nTaille3) {
+std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
-    int t = couleur;
+    int t = 0;
+
+
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        t = teinte(histoHSV);
+    }else{
+        t = colorValue.hue();
+    }
+
     int complementary_t = (t + 180) % 360;
     std::vector<float> delta_t(nTaille3 / 3);
     for (int i = 0; i < nTaille3; i += 3) {
@@ -199,11 +208,19 @@ std::vector<float> choosedCompl(int couleur, std::vector<float> ImgIn, int nTail
     return ImgOut;
 }
 
-std::vector<float> choosedHarmonieTri(int couleur, std::vector<float> ImgIn, int nTaille3) {
+std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-    int t = couleur;
+    int t = 0;
+
+
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        t = teinte(histoHSV);
+    }else{
+        t = colorValue.hue();
+    }
+
     int tri1 = (t + 120) % 360;
     int tri2 = (t + 240) % 360;
 
@@ -232,11 +249,20 @@ std::vector<float> choosedHarmonieTri(int couleur, std::vector<float> ImgIn, int
 
     return ImgOut;
 }
-std::vector<float> choosedHarmonieAnalogue(int couleur, std::vector<float> ImgIn, int nTaille3) {
+std::vector<float> choosedHarmonieAnalogue(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-    int t = couleur;
+
+    int t = 0;
+
+
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        t = teinte(histoHSV);
+    }else{
+        t = colorValue.hue();
+    }
+
     int analog1 = (t + 30) % 360;
     int analog2 = (t + 330) % 360;
 
