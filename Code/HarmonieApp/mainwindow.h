@@ -31,6 +31,8 @@ private slots:
 
     void on_Selectioncourleur_clicked();
 
+    void on_Export_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

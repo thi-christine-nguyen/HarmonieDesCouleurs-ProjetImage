@@ -15,7 +15,9 @@
 #include <iostream>
 
 QString ImgInPath;
+QString ImgOutPath;
 QColor colorValue;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -98,7 +100,15 @@ void MainWindow::on_Monochromatique_clicked()
 
 
 
-    char nomImgOut[] = "ImgOut";
+    char nomImgOut[] = "ImgOut.ppm";
+
+    QString ImgOutConvert = nomImgOut;
+    QFileInfo fileInfoConvert(ImgOutConvert);
+    ImgOutPath = fileInfoConvert.absoluteFilePath();
+
+
+
+
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -155,7 +165,7 @@ void MainWindow::on_Complementaire_clicked()
 
     }
 
-    char nomImgOut[] = "ImgOut";
+    char nomImgOut[] = "ImgOut.ppm";
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -207,7 +217,7 @@ void MainWindow::on_Triadique_clicked()
 
     }
 
-    char nomImgOut[] = "ImgOut";
+    char nomImgOut[] = "ImgOut.ppm";
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -260,7 +270,7 @@ void MainWindow::on_Analogue_clicked()
 
     }
 
-    char nomImgOut[] = "ImgOut";
+    char nomImgOut[] = "ImgOut.ppm";
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -280,40 +290,11 @@ void MainWindow::on_Selectioncourleur_clicked()
 }
 
 
+void MainWindow::on_Export_clicked()
+{
+    std::cout << ImgOutPath.toStdString() << std::endl;
 
+    PPMtoJPEG(ImgOutPath.toStdString(), "output");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 

@@ -32,6 +32,7 @@ public:
     QPushButton *Triadique;
     QPushButton *Analogue;
     QPushButton *Selectioncourleur;
+    QPushButton *Export;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -44,7 +45,7 @@ public:
         centralwidget->setObjectName("centralwidget");
         Import = new QPushButton(centralwidget);
         Import->setObjectName("Import");
-        Import->setGeometry(QRect(140, 440, 80, 24));
+        Import->setGeometry(QRect(110, 430, 80, 24));
         ImgIn = new QLabel(centralwidget);
         ImgIn->setObjectName("ImgIn");
         ImgIn->setGeometry(QRect(30, 70, 301, 331));
@@ -68,6 +69,9 @@ public:
         Selectioncourleur = new QPushButton(centralwidget);
         Selectioncourleur->setObjectName("Selectioncourleur");
         Selectioncourleur->setGeometry(QRect(340, 300, 111, 31));
+        Export = new QPushButton(centralwidget);
+        Export->setObjectName("Export");
+        Export->setGeometry(QRect(580, 430, 80, 24));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -93,6 +97,7 @@ public:
         Triadique->setText(QCoreApplication::translate("MainWindow", "Triadique", nullptr));
         Analogue->setText(QCoreApplication::translate("MainWindow", "Analogue", nullptr));
         Selectioncourleur->setText(QCoreApplication::translate("MainWindow", "Selection couleur", nullptr));
+        Export->setText(QCoreApplication::translate("MainWindow", "Export", nullptr));
     } // retranslateUi
 
 };
