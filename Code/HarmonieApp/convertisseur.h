@@ -126,7 +126,6 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
     ImgOut.resize(nTaille3);
 
     if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
-        std::cout << "hehe" << std::endl;
         int t = teinte(histoHSV);
         for(int i = 0; i < nTaille3; i+=3){
             ImgOut[i] = t;
@@ -134,7 +133,6 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
             ImgOut[i+2] = ImgIn[i+2];
         }
     }else{
-        std::cout << "haha" << std::endl;
         for(int i = 0; i < nTaille3; i+=3){
             ImgOut[i] = colorValue.hue();
             ImgOut[i+1] = 0.5;
@@ -154,7 +152,7 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
     ImgOut.resize(nTaille3);
 
     int t = teinte(histoHSV);
-    // t = 39;
+    t = 234;
     int complementary_t = (t + 180) % 360; // Calculer la couleur complémentaire
 
     // Calculer la différence de teinte entre chaque pixel et la teinte dominante

@@ -14,128 +14,170 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="Import">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>430</y>
-      <width>80</width>
-      <height>24</height>
+      <x>340</x>
+      <y>110</y>
+      <width>121</width>
+      <height>271</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Import</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="Monochromatique">
+       <property name="minimumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Monochromatique</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Complementaire">
+       <property name="minimumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Complementaire</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Triadique">
+       <property name="minimumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Triadique</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Analogue">
+       <property name="minimumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Analogue</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Selectioncourleur">
+       <property name="minimumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>31</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Selection couleur</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <widget class="QLabel" name="ImgIn">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>480</x>
       <y>70</y>
       <width>301</width>
-      <height>331</height>
+      <height>371</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="ImgOut">
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Export">
+       <property name="text">
+        <string>Export</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <widget class="QLabel" name="ImgOut">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>20</x>
       <y>70</y>
       <width>301</width>
-      <height>331</height>
+      <height>371</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Monochromatique">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>100</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Monochromatique</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Complementaire">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>150</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Complementaire</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Triadique">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>200</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Triadique</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Analogue">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>250</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Analogue</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Selectioncourleur">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>300</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Selection couleur</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Export">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>430</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Export</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="ImgIn">
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="Import">
+       <property name="text">
+        <string>Import</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -166,6 +166,11 @@ void MainWindow::on_Complementaire_clicked()
     }
 
     char nomImgOut[] = "ImgOut.ppm";
+
+    QString ImgOutConvert = nomImgOut;
+    QFileInfo fileInfoConvert(ImgOutConvert);
+    ImgOutPath = fileInfoConvert.absoluteFilePath();
+
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -203,6 +208,7 @@ void MainWindow::on_Triadique_clicked()
 
     std::vector<float> harmonie;
 
+    // harmonie = findBestHarmonieTri(histogramme, ImgOutHSV, nTaille3);
     harmonie = choosedHarmonieTri(histogramme, ImgOutHSV, nTaille3, colorValue);
 
     for(int i = 0; i < harmonie.size(); i+=3){
@@ -218,6 +224,11 @@ void MainWindow::on_Triadique_clicked()
     }
 
     char nomImgOut[] = "ImgOut.ppm";
+
+    QString ImgOutConvert = nomImgOut;
+    QFileInfo fileInfoConvert(ImgOutConvert);
+    ImgOutPath = fileInfoConvert.absoluteFilePath();
+
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);
@@ -271,6 +282,11 @@ void MainWindow::on_Analogue_clicked()
     }
 
     char nomImgOut[] = "ImgOut.ppm";
+
+    QString ImgOutConvert = nomImgOut;
+    QFileInfo fileInfoConvert(ImgOutConvert);
+    ImgOutPath = fileInfoConvert.absoluteFilePath();
+
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
 
     free(ImgIn);

@@ -16,6 +16,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -24,15 +25,21 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QPushButton *Import;
-    QLabel *ImgIn;
-    QLabel *ImgOut;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
     QPushButton *Monochromatique;
     QPushButton *Complementaire;
     QPushButton *Triadique;
     QPushButton *Analogue;
     QPushButton *Selectioncourleur;
+    QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *ImgOut;
     QPushButton *Export;
+    QWidget *widget1;
+    QVBoxLayout *verticalLayout_2;
+    QLabel *ImgIn;
+    QPushButton *Import;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -43,35 +50,81 @@ public:
         MainWindow->resize(800, 600);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        Import = new QPushButton(centralwidget);
-        Import->setObjectName("Import");
-        Import->setGeometry(QRect(110, 430, 80, 24));
-        ImgIn = new QLabel(centralwidget);
-        ImgIn->setObjectName("ImgIn");
-        ImgIn->setGeometry(QRect(30, 70, 301, 331));
-        ImgIn->setFrameShape(QFrame::Box);
-        ImgOut = new QLabel(centralwidget);
-        ImgOut->setObjectName("ImgOut");
-        ImgOut->setGeometry(QRect(460, 70, 301, 331));
-        ImgOut->setFrameShape(QFrame::Box);
-        Monochromatique = new QPushButton(centralwidget);
+        widget = new QWidget(centralwidget);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(340, 110, 121, 271));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setObjectName("verticalLayout");
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        Monochromatique = new QPushButton(widget);
         Monochromatique->setObjectName("Monochromatique");
-        Monochromatique->setGeometry(QRect(340, 100, 111, 31));
-        Complementaire = new QPushButton(centralwidget);
+        Monochromatique->setMinimumSize(QSize(111, 31));
+        Monochromatique->setMaximumSize(QSize(111, 31));
+
+        verticalLayout->addWidget(Monochromatique);
+
+        Complementaire = new QPushButton(widget);
         Complementaire->setObjectName("Complementaire");
-        Complementaire->setGeometry(QRect(340, 150, 111, 31));
-        Triadique = new QPushButton(centralwidget);
+        Complementaire->setMinimumSize(QSize(111, 31));
+        Complementaire->setMaximumSize(QSize(111, 31));
+
+        verticalLayout->addWidget(Complementaire);
+
+        Triadique = new QPushButton(widget);
         Triadique->setObjectName("Triadique");
-        Triadique->setGeometry(QRect(340, 200, 111, 31));
-        Analogue = new QPushButton(centralwidget);
+        Triadique->setMinimumSize(QSize(111, 31));
+        Triadique->setMaximumSize(QSize(111, 31));
+
+        verticalLayout->addWidget(Triadique);
+
+        Analogue = new QPushButton(widget);
         Analogue->setObjectName("Analogue");
-        Analogue->setGeometry(QRect(340, 250, 111, 31));
-        Selectioncourleur = new QPushButton(centralwidget);
+        Analogue->setMinimumSize(QSize(111, 31));
+        Analogue->setMaximumSize(QSize(111, 31));
+
+        verticalLayout->addWidget(Analogue);
+
+        Selectioncourleur = new QPushButton(widget);
         Selectioncourleur->setObjectName("Selectioncourleur");
-        Selectioncourleur->setGeometry(QRect(340, 300, 111, 31));
-        Export = new QPushButton(centralwidget);
+        Selectioncourleur->setMinimumSize(QSize(111, 31));
+        Selectioncourleur->setMaximumSize(QSize(111, 31));
+
+        verticalLayout->addWidget(Selectioncourleur);
+
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName("layoutWidget");
+        layoutWidget->setGeometry(QRect(480, 70, 301, 371));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget);
+        verticalLayout_3->setObjectName("verticalLayout_3");
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        ImgOut = new QLabel(layoutWidget);
+        ImgOut->setObjectName("ImgOut");
+        ImgOut->setFrameShape(QFrame::Box);
+
+        verticalLayout_3->addWidget(ImgOut);
+
+        Export = new QPushButton(layoutWidget);
         Export->setObjectName("Export");
-        Export->setGeometry(QRect(580, 430, 80, 24));
+
+        verticalLayout_3->addWidget(Export);
+
+        widget1 = new QWidget(centralwidget);
+        widget1->setObjectName("widget1");
+        widget1->setGeometry(QRect(20, 70, 301, 371));
+        verticalLayout_2 = new QVBoxLayout(widget1);
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        ImgIn = new QLabel(widget1);
+        ImgIn->setObjectName("ImgIn");
+        ImgIn->setFrameShape(QFrame::Box);
+
+        verticalLayout_2->addWidget(ImgIn);
+
+        Import = new QPushButton(widget1);
+        Import->setObjectName("Import");
+
+        verticalLayout_2->addWidget(Import);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -89,15 +142,15 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        Import->setText(QCoreApplication::translate("MainWindow", "Import", nullptr));
-        ImgIn->setText(QString());
-        ImgOut->setText(QString());
         Monochromatique->setText(QCoreApplication::translate("MainWindow", "Monochromatique", nullptr));
         Complementaire->setText(QCoreApplication::translate("MainWindow", "Complementaire", nullptr));
         Triadique->setText(QCoreApplication::translate("MainWindow", "Triadique", nullptr));
         Analogue->setText(QCoreApplication::translate("MainWindow", "Analogue", nullptr));
         Selectioncourleur->setText(QCoreApplication::translate("MainWindow", "Selection couleur", nullptr));
+        ImgOut->setText(QString());
         Export->setText(QCoreApplication::translate("MainWindow", "Export", nullptr));
+        ImgIn->setText(QString());
+        Import->setText(QCoreApplication::translate("MainWindow", "Import", nullptr));
     } // retranslateUi
 
 };
