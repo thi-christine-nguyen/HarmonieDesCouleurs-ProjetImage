@@ -152,7 +152,6 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
     ImgOut.resize(nTaille3);
 
     int t = teinte(histoHSV);
-    t = 234;
     int complementary_t = (t + 180) % 360; // Calculer la couleur complémentaire
 
     // Calculer la différence de teinte entre chaque pixel et la teinte dominante
