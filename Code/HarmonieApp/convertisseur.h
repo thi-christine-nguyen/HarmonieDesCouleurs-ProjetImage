@@ -189,14 +189,12 @@ std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<flo
     for(int i = 0 ; i < nTaille3; i+=3){
         float distT = std::abs(ImgIn[i] - t);
         float distT1 = std::abs(ImgIn[i] - tri1);
-
-        float factorT = std::min(distT / 90.0f, 1.0f);
-        float factorT1 = std::min(distT1 / 90.0f, 1.0f);
-
         float hueInterpolation;
         if (distT < distT1) {
+            float factorT = std::min(distT / 90.0f, 1.0f);
             hueInterpolation = t + factorT * ((t + 180) % 360 - t);
         } else {
+            float factorT1 = std::min(distT1 / 90.0f, 1.0f);
             hueInterpolation = tri1 + factorT1 * ((tri1 + 180) % 360 - tri1);
         }
         ImgOut[i] = hueInterpolation;
@@ -227,18 +225,16 @@ std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV,std::vect
         float distT = std::abs(ImgIn[i] - t);
         float distT1 = std::abs(ImgIn[i] - tri1);
         float distT2 = std::abs(ImgIn[i] - tri2);
-
         float factorT = std::min(distT / 90.0f, 1.0f);
-        float factorT1 = std::min(distT1 / 90.0f, 1.0f);
-        float factorT2 = std::min(distT2 / 90.0f, 1.0f);
-
         float hueInterpolation;
         if (distT < distT1 && distT < distT2) {
             hueInterpolation = t + factorT * ((t + 180) % 360 - t);
         } else if (distT1 < distT && distT1 < distT2) {
-            hueInterpolation = tri1 + factorT1 * ((tri1 + 180) % 360 - tri1);
+            factorT = std::min(distT1 / 90.0f, 1.0f);
+            hueInterpolation = tri1 + factorT * ((tri1 + 180) % 360 - tri1);
         } else {
-            hueInterpolation = tri2 + factorT2 * ((tri2 + 180) % 360 - tri2);
+            factorT = std::min(distT2 / 90.0f, 1.0f);
+            hueInterpolation = tri2 + factorT * ((tri2 + 180) % 360 - tri2);
         }
 
         ImgOut[i] = hueInterpolation;
