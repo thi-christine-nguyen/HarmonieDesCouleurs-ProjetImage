@@ -179,30 +179,31 @@ std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<flo
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
     int t = 0;
-
-
     if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
         t = teinte(histoHSV);
     }else{
         t = colorValue.hue();
     }
 
-    int complementary_t = (t + 180) % 360;
-    std::vector<float> delta_t(nTaille3 / 3);
-    for (int i = 0; i < nTaille3; i += 3) {
-        delta_t[i / 3] = static_cast<float>(std::abs(static_cast<int>(ImgIn[i]) - t));
-    }
-    for (int i = 0; i < nTaille3; i += 3) {
-        if (delta_t[i / 3] < 90) {
-            float factor = delta_t[i / 3] / 90.0f;
-            float hueInterpolation = t + factor * (complementary_t - t);
-            ImgOut[i] = hueInterpolation;
+    int tri1 = (t + 180) % 360;
+    for(int i = 0 ; i < nTaille3; i+=3){
+        float distT = std::abs(ImgIn[i] - t);
+        float distT1 = std::abs(ImgIn[i] - tri1);
+
+        float factorT = std::min(distT / 90.0f, 1.0f);
+        float factorT1 = std::min(distT1 / 90.0f, 1.0f);
+
+        float hueInterpolation;
+        if (distT < distT1) {
+            hueInterpolation = t + factorT * ((t + 180) % 360 - t);
         } else {
-            ImgOut[i] = complementary_t;
+            hueInterpolation = tri1 + factorT1 * ((tri1 + 180) % 360 - tri1);
         }
-        ImgOut[i+1] = 0.5;
-        ImgOut[i+2] = ImgIn[i+2];
+        ImgOut[i] = hueInterpolation;
+        ImgOut[i + 1] = 0.5;
+        ImgOut[i + 2] = ImgIn[i + 2];
     }
+
     return ImgOut;
 }
 
