@@ -98,8 +98,6 @@ void MainWindow::on_Monochromatique_clicked()
 
     }
 
-
-
     char nomImgOut[] = "ImgOut.ppm";
 
     QString ImgOutConvert = nomImgOut;
@@ -308,9 +306,10 @@ void MainWindow::on_Selectioncourleur_clicked()
 
 void MainWindow::on_Export_clicked()
 {
-    std::cout << ImgOutPath.toStdString() << std::endl;
 
-    PPMtoJPEG(ImgOutPath.toStdString(), "output");
+    QString fileName = QFileDialog::getSaveFileName(this, "Export", QDir::homePath());
+    QFileInfo fileInfo(fileName);
+    PPMtoJPEG(ImgOutPath.toStdString(), fileInfo.absoluteFilePath().toStdString());
 
 }
 
