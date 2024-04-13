@@ -4,7 +4,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <string>
-typedef unsigned char OCTET;
 void ToPPM(const std::string &inputPath, const std::string &outputPath) {
     cv::Mat image = cv::imread(inputPath, cv::IMREAD_UNCHANGED);
     if (image.empty()) {
@@ -24,12 +23,6 @@ void ToPPM(const std::string &inputPath, const std::string &outputPath) {
     }
 }
 
-void appliquerLissageGaussien(OCTET* in, OCTET* out, int l, int h) {
-    cv::Mat imageIn(h, l, CV_8UC3, in);
-    cv::Mat imageOut;
-    cv::GaussianBlur(imageIn,imageOut,cv::Size(5, 5), 0);
-    memcpy(out, imageOut.data, l * h * 3 * sizeof(OCTET));
-}
 
 void PPMtoJPEG(const std::string& inputPath, const std::string& outputPath) {
     cv::Mat image = cv::imread(inputPath, cv::IMREAD_COLOR);
