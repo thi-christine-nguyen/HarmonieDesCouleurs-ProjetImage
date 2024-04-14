@@ -171,22 +171,6 @@ void Moyenneur( OCTET* imgIn, OCTET* imgOut, int largeur, int hauteur) {
         }
     }
 }
-struct Vec3bComparer {
-    bool operator()(const cv::Vec3b& a, const cv::Vec3b& b) const {
-        if (a[0]!=b[0])
-            return a[0] < b[0];
-        if (a[1]!=b[1])
-            return a[1] < b[1];
-        return a[2] < b[2];
-    }
-};
-
-#include <opencv2/opencv.hpp>
-#include <iostream>
-#include <cstring>
-
-typedef unsigned char OCTET;
-
 void contours(OCTET* imgIn, OCTET* imgOut, int h, int l) {
     cv::Mat image(h, l, CV_8UC3, imgIn);
     cv::Mat gray;
