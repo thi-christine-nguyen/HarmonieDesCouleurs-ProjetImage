@@ -114,6 +114,7 @@ void MainWindow::on_Complementaire_clicked()
     int nTaille3 = nTaille * 3;
     allocation_tableau(ImgIn, OCTET, nTaille3);
     lire_image_ppm(nom_image, ImgIn, nH * nW);
+    //Moyenneur(ImgIn,ImgIn,nH,nW);
     allocation_tableau(ImgHsvRgb, OCTET, nTaille3);
 
     std::vector<float> ImgOutHSV;
@@ -138,8 +139,19 @@ void MainWindow::on_Complementaire_clicked()
 
     }
 
+<<<<<<< Updated upstream
     char nomImgOut[] = "ImgOut";
     ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
+=======
+    char nomImgOut[] = "ImgOut.ppm";
+
+    QString ImgOutConvert = nomImgOut;
+    QFileInfo fileInfoConvert(ImgOutConvert);
+    ImgOutPath = fileInfoConvert.absoluteFilePath();
+    contours(ImgIn,ImgIn,nH,nW);
+    ecrire_image_ppm(nomImgOut, ImgIn, nH, nW);
+    //ecrire_image_ppm(nomImgOut, ImgHsvRgb, nH, nW);
+>>>>>>> Stashed changes
 
     free(ImgIn);
     free(ImgHsvRgb);

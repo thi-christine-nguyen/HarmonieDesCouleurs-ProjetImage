@@ -144,7 +144,28 @@ std::vector<float>choosedMono(int couleur, std::vector<float> ImgIn, int nTaille
         ImgOut[i+2] = ImgIn[i+2];
     }
 
+<<<<<<< Updated upstream
     return ImgOut;
+=======
+void contours(OCTET* imgIn, OCTET* imgOut, int h, int l) {
+    cv::Mat image(h, l, CV_8UC3, imgIn);
+    cv::Mat gray;
+    cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+    cv::GaussianBlur(gray, gray, cv::Size(5, 5), 1.5);
+    cv::Mat contours;
+    double s1 = 100;
+    double    s2 = 200;
+    cv::Canny(gray, contours, s1, s2);
+    cv::Mat contourImageRGB;
+    cv::cvtColor(contours, contourImageRGB, cv::COLOR_GRAY2BGR);
+    std::memcpy(imgOut, contourImageRGB.data, l * h *3 *sizeof(OCTET));
+}
+void appliquerLissageGaussien(OCTET* in, OCTET* out, int l, int h) {
+    cv::Mat imageIn(h, l, CV_8UC3, in);
+    cv::Mat imageOut;
+    cv::GaussianBlur(imageIn,imageOut,cv::Size(3,3), 2);
+    memcpy(out, imageOut.data, l * h * 3 * sizeof(OCTET));
+>>>>>>> Stashed changes
 }
 
 
