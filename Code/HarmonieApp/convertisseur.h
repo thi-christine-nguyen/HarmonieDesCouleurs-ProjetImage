@@ -13,6 +13,7 @@
 #include <opencv2/opencv.hpp>
 #include <map>
 #include <cstring>
+#include <algorithm>
 typedef unsigned char OCTET;
 typedef unsigned char OCTET;
 
@@ -170,6 +171,21 @@ void HSVtoRGB(float H, float S, float V, int *r, int *g, int *b) {
 }
 
 
+float interpolationT(float teinte1, float teinte2, float f) {
+    float distance = teinte2 - teinte1;
+    if (distance > 180) {
+        distance -= 360;
+    } else if (distance < -180) {
+        distance += 360;
+    }
+    return fmod((teinte1 + distance * f + 360), 360);
+}
+
+float teinteD(float h1, float h2) {
+    float d = std::abs(h1 - h2);
+    return fmin(d, 360 - d);
+}
+
 
 std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
@@ -180,13 +196,13 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
         std::cout << t << std::endl;
         for(int i = 0; i < nTaille3; i+=3){
             ImgOut[i] = t;
-            ImgOut[i+1] = 0.5;
+            ImgOut[i+1] = ImgIn[i+1];
             ImgOut[i+2] = ImgIn[i+2];
         }
     }else{
         for(int i = 0; i < nTaille3; i+=3){
             ImgOut[i] = colorValue.hue();
-            ImgOut[i+1] = 0.5;
+            ImgOut[i+1] = ImgIn[i+1];
             ImgOut[i+2] = ImgIn[i+2];
         }
 
@@ -197,9 +213,9 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
     return ImgOut;
 }
 
-void Moyenneur(const std::vector<float>& imgIn, std::vector<float>& imgOut, int largeur, int hauteur) {
-    for (int y = 0; y < hauteur; ++y) {
-        for (int x = 0; x < largeur; ++x) {
+void Moyenneur( std::vector<float>& imgIn, std::vector<float>& imgOut, int largeur, int hauteur) {
+    for (int y = 1; y < hauteur-1; ++y) {
+        for (int x = 1; x < largeur-1; ++x) {
             float sommeR = 0, sommeG = 0, sommeB = 0;
             int count = 0;
             for (int i = -1; i <= 1; ++i) {
@@ -223,22 +239,28 @@ void Moyenneur(const std::vector<float>& imgIn, std::vector<float>& imgOut, int 
     }
 }
 
-void contours(const std::vector<float>& imgIn, std::vector<float>& imgOut, int h, int l) {
-    cv::Mat image(h, l, CV_32FC3, const_cast<float*>(imgIn.data()));
+void contours(OCTET* imgIn, OCTET* imgOut, int h, int l) {
+    cv::Mat image(h, l, CV_8UC3, imgIn);
     cv::Mat gray;
     cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
     cv::GaussianBlur(gray, gray, cv::Size(5, 5), 1.5);
     cv::Mat contourImg;
     cv::Canny(gray, contourImg, 100, 200);
     cv::cvtColor(contourImg, contourImg, cv::COLOR_GRAY2BGR);
-    memcpy(imgOut.data(), contourImg.data, l * h * 3 * sizeof(float));
+    memcpy(imgOut, contourImg.data, l * h * 3 * sizeof(OCTET));
 }
 
-void appliquerLissageGaussien(const std::vector<float>& in, std::vector<float>& out, int l, int h) {
+void gauss(const std::vector<float>& in, std::vector<float>& out, int l, int h) {
     cv::Mat imageIn(h, l, CV_32FC3, const_cast<float*>(in.data()));
     cv::Mat imageOut;
-    cv::GaussianBlur(imageIn, imageOut, cv::Size(3, 3), 0.5);
+    cv::GaussianBlur(imageIn, imageOut, cv::Size(5, 5), 2);
     memcpy(out.data(), imageOut.data, l * h * 3 * sizeof(float));
+}
+void gauss(OCTET* in, OCTET* out, int l, int h) {
+    cv::Mat imageIn(h, l, CV_8UC3, in);
+    cv::Mat imageOut;
+    cv::GaussianBlur(imageIn,imageOut,cv::Size(5,5), 10);
+    memcpy(out, imageOut.data, l * h * 3 * sizeof(OCTET));
 }
 std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
     std::vector<float> ImgOut;
@@ -261,7 +283,7 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
         } else {
             ImgOut[i] = complementary_t; // Teinte complémentaire
         }
-        ImgOut[i+1] = 0.5;
+        ImgOut[i+1] = ImgIn[i+1];
         ImgOut[i+2] = ImgIn[i+2]; // Conserver la luminance
     }
 
@@ -279,101 +301,99 @@ std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<flo
 
     int tri1 = (t + 180) % 360;
     for(int i = 0 ; i < nTaille3; i+=3){
-        float distT = std::abs(ImgIn[i] - t);
-        float distT1 = std::abs(ImgIn[i] - tri1);
+        float distT = teinteD(ImgIn[i], t);
+        float distT1 = teinteD(ImgIn[i], tri1);
         float teinteInt;
         if (distT < distT1) {
-            float factorT = std::min(distT / 90.0f, 1.0f);
-            teinteInt = t + factorT * ((t + 180) % 360 - t);
+            float T = 1.0f - (distT / 180.0f);
+            T = fmax(T,0.7);
+            teinteInt =interpolationT(ImgIn[i], distT, T);
         } else {
-            float factorT1 = std::min(distT1 / 90.0f, 1.0f);
-            teinteInt = tri1 + factorT1 * ((tri1 + 180) % 360 - tri1);
+            float T1 = 1.0f - (distT1 / 180.0f);
+            T1 = fmax(T1,0.7);
+            teinteInt = interpolationT(ImgIn[i], distT1, T1);
         }
         ImgOut[i] = teinteInt;
-        ImgOut[i + 1] = 0.5;
+        ImgOut[i + 1] = ImgIn[i + 1];
         ImgOut[i + 2] = ImgIn[i + 2];
     }
 
     return ImgOut;
 }
 
-std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
+std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-    int t = 0;
-
-
-    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
-        t = teinte(histoHSV);
-    }else{
-        t = colorValue.hue();
-    }
-
+    int t = colorValue.isValid() ? colorValue.hue() : teinte(histoHSV);
     int tri1 = (t + 120) % 360;
     int tri2 = (t + 240) % 360;
 
+
+
     for(int i = 0 ; i < nTaille3; i+=3){
-        float distT = std::abs(ImgIn[i] - t);
-        float distT1 = std::abs(ImgIn[i] - tri1);
-        float distT2 = std::abs(ImgIn[i] - tri2);
-        float factorT = std::min(distT / 90.0f, 1.0f);
-        float teinteInt;
-        if (distT < distT1 && distT < distT2) {
-            teinteInt = t + factorT * ((t + 180) % 360 - t);
-        } else if (distT1 < distT && distT1 < distT2) {
-            factorT = std::min(distT1 / 90.0f, 1.0f);
-            teinteInt = tri1 + factorT * ((tri1 + 180) % 360 - tri1);
-        } else {
-            factorT = std::min(distT2 / 90.0f, 1.0f);
-            teinteInt = tri2 + factorT * ((tri2 + 180) % 360 - tri2);
+        float teinte = ImgIn[i];
+        float distT = teinteD(teinte, t);
+        float distT1 = teinteD(teinte, tri1);
+        float distT2 = teinteD(teinte, tri2);
+
+        float proche = t;
+        float minDistance = distT;
+        if (distT1 < minDistance) {
+            minDistance = distT1;
+            proche = tri1;
+        }
+        if (distT2 < minDistance) {
+            minDistance = distT2;
+            proche = tri2;
         }
 
-        ImgOut[i] = teinteInt;
-        ImgOut[i + 1] = 0.5;
+        float interpolation = 1.0f - (minDistance / 120.0f);
+        interpolation = fmax(interpolation,0.7);
+        ImgOut[i] = interpolationT(teinte, proche, interpolation);
+        ImgOut[i + 1] = ImgIn[i + 1];
         ImgOut[i + 2] = ImgIn[i + 2];
     }
 
     return ImgOut;
 }
-std::vector<float> choosedHarmonieAnalogue(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
+
+std::vector<float> choosedHarmonieAnalogue(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-
-    int t = 0;
-
-
-    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
-        t = teinte(histoHSV);
-    }else{
-        t = colorValue.hue();
-    }
+    int t = colorValue.isValid() ? colorValue.hue() : teinte(histoHSV);
 
     int analog1 = (t + 30) % 360;
-    int analog2 = (t + 330) % 360;
+    int analog2 = (t - 30 + 360) % 360;
 
-    for(int i = 0 ; i < nTaille3; i+=3){
-        float delta_t1 = std::abs(ImgIn[i] - analog1);
-        float delta_t2 = std::abs(ImgIn[i] - analog2);
 
-        float factorT1 = std::min(delta_t1 / 45.0f, 1.0f);
-        float factorT2 = std::min(delta_t2 / 45.0f, 1.0f);
-
-        float teinteInt;
-        if (delta_t1 < delta_t2) {
-            teinteInt = analog1 + factorT1 * ((analog1 + 180) % 360 - analog1);
-        } else {
-            teinteInt = analog2 + factorT2 * ((analog2 + 180) % 360 - analog2);
+    for(int i = 0; i < nTaille3; i += 3) {
+        float teinte = ImgIn[i];
+        float distT = teinteD(teinte, t);
+        float distT1 = teinteD(teinte, analog1);
+        float distT2 = teinteD(teinte, analog2);
+        float proche = t;
+        float minDistance = distT;
+        if (distT1 < minDistance) {
+            minDistance = distT1;
+            proche = analog1;
         }
-
-        ImgOut[i] = teinteInt;
-        ImgOut[i + 1] = 0.5;
+        if (distT2 < minDistance) {
+            minDistance = distT2;
+            proche = analog2;
+        }
+        float interpolation = 1.0f - (minDistance / 300.0f);
+        interpolation = fmax(interpolation,0.7);
+        ImgOut[i] = interpolationT(teinte, proche, interpolation);
+        ImgOut[i + 1] = ImgIn[i + 1];
         ImgOut[i + 2] = ImgIn[i + 2];
     }
 
     return ImgOut;
 }
+
+
 
 std::vector<float> findBestHarmonieTri(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3) {
     std::vector<float> ImgOut;
