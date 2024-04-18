@@ -39,6 +39,8 @@ void MainWindow::on_Import_clicked()
     QString fileName = QFileDialog::getOpenFileName(this, "Import", QDir::homePath());
     colorValue.setHsv(0, 0, 0);
 
+
+
     QFileInfo fileInfo(fileName);
     if(fileInfo.suffix() == "ppm"){
         ImgInPath = fileName;
@@ -50,6 +52,30 @@ void MainWindow::on_Import_clicked()
         ImgInPath = fileInfoConvert.absoluteFilePath();
         ImgInPath += ".ppm";
     }
+
+    int nH, nW, nTaille;
+
+    OCTET *ImgIn, *ImgHsvRgb;
+
+    char nom_image[ImgInPath.length() + 1];
+    strcpy(nom_image, ImgInPath.toUtf8().constData());
+    lire_nb_lignes_colonnes_image_ppm(nom_image, &nH, &nW);
+
+    nTaille = nH * nW;
+
+    int nTaille3 = nTaille * 3;
+    allocation_tableau(ImgIn, OCTET, nTaille3);
+    lire_image_ppm(nom_image, ImgIn, nH * nW);
+
+    std::vector<int> color = getHistoRGB(ImgIn, nTaille3);
+    QColor couleur(color[0], color[1], color[2]);
+
+    std::cout << "lala" << std::endl;
+
+
+    QString styleSheet = QString("background-color: %1").arg(couleur.name());
+    ui->colorButton->setStyleSheet(styleSheet);
+
 
     ui->ImgIn->setPixmap( QPixmap( fileName ) );
     ui->ImgIn->setScaledContents( true );
@@ -301,6 +327,10 @@ void MainWindow::on_Analogue_clicked()
 void MainWindow::on_Selectioncourleur_clicked()
 {
     colorValue = QColorDialog::getColor(Qt::white, this, tr("Select Color"));
+    if (colorValue.isValid()) {
+        QString styleSheet = QString("background-color: %1").arg(colorValue.name());
+        ui->colorButton->setStyleSheet(styleSheet);
+    }
 }
 
 

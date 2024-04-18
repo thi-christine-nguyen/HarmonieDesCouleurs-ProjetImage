@@ -68,6 +68,54 @@ std::vector<int> getHistoHSV(std::vector<float> ImgIn, int nTaille3){
 
 }
 
+std::vector<int> getHistoRGB(OCTET* ImgIn, int nTaille3){
+
+    std::vector<int> redHisto(256, 0);
+    std::vector<int> greenHisto(256, 0);
+    std::vector<int> blueHisto(256, 0);
+
+    for(int i = 0; i < nTaille3; i+=3){
+
+
+        int r = ImgIn[i];
+        redHisto[r]++;
+
+        int g = ImgIn[i+1];
+        greenHisto[g]++;
+
+        int b = ImgIn[i+2];
+        blueHisto[b]++;
+    }
+
+
+    int redMax = 0;
+    int greenMax = 0;
+    int blueMax = 0;
+    int redIndex = 0;
+    int greenIndex = 0;
+    int blueIndex = 0;
+
+    for (int i = 0; i < 256; i++) {
+
+        if (redHisto[i] > redMax) {
+            redMax = redHisto[i];
+            redIndex = i;
+        }
+        if (greenHisto[i] > greenMax) {
+            greenMax = greenHisto[i];
+            greenIndex = i;
+        }
+        if (blueHisto[i] > blueMax) {
+            blueMax = blueHisto[i];
+            blueIndex = i;
+        }
+    }
+
+    return { redIndex, greenIndex, blueIndex };
+}
+
+
+
 int sommeVoisinHSV(const std::vector<int>& histoHSV, int teinte) {
     int somme = 0;
     int voisins = 5; // Nombre de voisins à inclure de chaque côté de la teinte
