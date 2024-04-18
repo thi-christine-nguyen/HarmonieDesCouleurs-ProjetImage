@@ -67,16 +67,14 @@ void MainWindow::on_Import_clicked()
     allocation_tableau(ImgIn, OCTET, nTaille3);
     lire_image_ppm(nom_image, ImgIn, nH * nW);
 
-    std::vector<int> color = getHistoRGB(ImgIn, nTaille3);
-    QColor couleur(color[0], color[1], color[2]);
+    std::vector<float> ImgOutHSV;
+    ImgOutHSV = RGBtoHSV(nTaille, ImgIn);
+    std::vector<int> histogramme = getHistoHSV(ImgOutHSV, nTaille3);
+    int t = teinte(histogramme);
 
-    std::cout << "lala" << std::endl;
-
-
-    QString styleSheet = QString("background-color: %1").arg(couleur.name());
+    QColor couleurRGB = QColor::fromHsv(t, 255, 255);
+    QString styleSheet = QString("background-color: %1").arg(couleurRGB.name());
     ui->colorButton->setStyleSheet(styleSheet);
-
-
     ui->ImgIn->setPixmap( QPixmap( fileName ) );
     ui->ImgIn->setScaledContents( true );
     ui->ImgIn->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );

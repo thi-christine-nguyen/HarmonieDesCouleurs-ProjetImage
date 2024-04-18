@@ -177,6 +177,7 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
 
     if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
         int t = teinte(histoHSV);
+        std::cout << t << std::endl;
         for(int i = 0; i < nTaille3; i+=3){
             ImgOut[i] = t;
             ImgOut[i+1] = 0.5;
@@ -195,30 +196,7 @@ std::vector<float>findBestHarmonieMono(const std::vector<int>& histoHSV, std::ve
 
     return ImgOut;
 }
-void Moyenneur( OCTET* imgIn, OCTET* imgOut, int largeur, int hauteur) {
-    for (int y= 0; y< hauteur; ++y) {
-        for (int x= 0; x< largeur; ++x) {
-            int sommeR = 0,sommeG = 0, sommeB = 0,count = 0;
-            for (int i = -1; i<= 1; ++i) {
-                for (int j = -1; j<= 1; ++j) {
-                    int ny =y+i;
-                    int nx = x+j;
-                    if (nx >= 0 && nx < largeur && ny >= 0 && ny < hauteur) {
-                        int a = (ny*largeur + nx) * 3;
-                        sommeR += imgIn[a];
-                        sommeG += imgIn[a+1];
-                        sommeB += imgIn[a+2];
-                        count++;
-                    }
-                }
-            }
-            int i = (y * largeur + x) * 3;
-            imgOut[i]  = sommeR / count;
-            imgOut[i+1] = sommeG / count;
-            imgOut[i+2] = sommeB / count;
-        }
-    }
-}
+
 void Moyenneur(const std::vector<float>& imgIn, std::vector<float>& imgOut, int largeur, int hauteur) {
     for (int y = 0; y < hauteur; ++y) {
         for (int x = 0; x < largeur; ++x) {
@@ -244,19 +222,7 @@ void Moyenneur(const std::vector<float>& imgIn, std::vector<float>& imgOut, int 
         }
     }
 }
-void contours(OCTET* imgIn, OCTET* imgOut, int h, int l) {
-    cv::Mat image(h, l, CV_8UC3, imgIn);
-    cv::Mat gray;
-    cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
-    cv::GaussianBlur(gray, gray, cv::Size(5, 5), 1.5);
-    cv::Mat contours;
-    double s1 = 100;
-    double    s2 = 200;
-    cv::Canny(gray, contours, s1, s2);
-    cv::Mat contourImageRGB;
-    cv::cvtColor(contours, contourImageRGB, cv::COLOR_GRAY2BGR);
-    std::memcpy(imgOut, contourImageRGB.data, l * h *3 *sizeof(OCTET));
-}
+
 void contours(const std::vector<float>& imgIn, std::vector<float>& imgOut, int h, int l) {
     cv::Mat image(h, l, CV_32FC3, const_cast<float*>(imgIn.data()));
     cv::Mat gray;
@@ -267,12 +233,7 @@ void contours(const std::vector<float>& imgIn, std::vector<float>& imgOut, int h
     cv::cvtColor(contourImg, contourImg, cv::COLOR_GRAY2BGR);
     memcpy(imgOut.data(), contourImg.data, l * h * 3 * sizeof(float));
 }
-void appliquerLissageGaussien(OCTET* in, OCTET* out, int l, int h) {
-    cv::Mat imageIn(h, l, CV_8UC3, in);
-    cv::Mat imageOut;
-    cv::GaussianBlur(imageIn,imageOut,cv::Size(3,3), 0.5);
-    memcpy(out, imageOut.data, l * h * 3 * sizeof(OCTET));
-}
+
 void appliquerLissageGaussien(const std::vector<float>& in, std::vector<float>& out, int l, int h) {
     cv::Mat imageIn(h, l, CV_32FC3, const_cast<float*>(in.data()));
     cv::Mat imageOut;
