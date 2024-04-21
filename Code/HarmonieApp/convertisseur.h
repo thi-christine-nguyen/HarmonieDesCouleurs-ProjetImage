@@ -325,7 +325,12 @@ std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV, std::vec
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-    int t = colorValue.isValid() ? colorValue.hue() : teinte(histoHSV);
+    int t = 0;
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        t = teinte(histoHSV);
+    }else{
+        t = colorValue.hue();
+    }
     int tri1 = (t + 120) % 360;
     int tri2 = (t + 240) % 360;
 
@@ -337,20 +342,22 @@ std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV, std::vec
         float distT1 = teinteD(teinte, tri1);
         float distT2 = teinteD(teinte, tri2);
 
-        float proche = t;
+        float proche;
         float minDistance = distT;
-        if (distT1 < minDistance) {
-            minDistance = distT1;
-            proche = tri1;
+        if (distT1 <= distT2 && distT1 < minDistance) {
+            float T1 = 1.0f - (distT1 / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche =interpolationT(ImgIn[i], tri1, T1);
+        } else if (distT2 < distT1 && distT2 < minDistance) {
+            float T1 = 1.0f - (distT2 / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche = interpolationT(ImgIn[i], tri2, T1);
+        } else {
+            float T1 = 1.0f - (minDistance / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche = interpolationT(ImgIn[i], t, T1);
         }
-        if (distT2 < minDistance) {
-            minDistance = distT2;
-            proche = tri2;
-        }
-
-        float interpolation = 1.0f - (minDistance / 120.0f);
-        interpolation = fmax(interpolation,0.7);
-        ImgOut[i] = interpolationT(teinte, proche, interpolation);
+        ImgOut[i] = proche;
         ImgOut[i + 1] = ImgIn[i + 1];
         ImgOut[i + 2] = ImgIn[i + 2];
     }
@@ -362,7 +369,12 @@ std::vector<float> choosedHarmonieAnalogue(const std::vector<int>& histoHSV, std
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
 
-    int t = colorValue.isValid() ? colorValue.hue() : teinte(histoHSV);
+    int t = 0;
+    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+        t = teinte(histoHSV);
+    }else{
+        t = colorValue.hue();
+    }
 
     int analog1 = (t + 30) % 360;
     int analog2 = (t - 30 + 360) % 360;
@@ -373,25 +385,29 @@ std::vector<float> choosedHarmonieAnalogue(const std::vector<int>& histoHSV, std
         float distT = teinteD(teinte, t);
         float distT1 = teinteD(teinte, analog1);
         float distT2 = teinteD(teinte, analog2);
-        float proche = t;
+        float proche;
         float minDistance = distT;
-        if (distT1 < minDistance) {
-            minDistance = distT1;
-            proche = analog1;
+        if (distT1 <= distT2 && distT1 < minDistance) {
+            float T1 = 1.0f - (distT1 / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche =interpolationT(ImgIn[i], analog1, T1);
+        } else if (distT2 < distT1 && distT2 < minDistance) {
+            float T1 = 1.0f - (distT2 / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche = interpolationT(ImgIn[i], analog2, T1);
+        } else {
+            float T1 = 1.0f - (minDistance / 120.0f);
+            T1 = fmax(T1,0.7);
+            proche = interpolationT(ImgIn[i], t, T1);
         }
-        if (distT2 < minDistance) {
-            minDistance = distT2;
-            proche = analog2;
-        }
-        float interpolation = 1.0f - (minDistance / 300.0f);
-        interpolation = fmax(interpolation,0.7);
-        ImgOut[i] = interpolationT(teinte, proche, interpolation);
+        ImgOut[i] = proche;
         ImgOut[i + 1] = ImgIn[i + 1];
         ImgOut[i + 2] = ImgIn[i + 2];
     }
 
     return ImgOut;
 }
+
 
 
 
