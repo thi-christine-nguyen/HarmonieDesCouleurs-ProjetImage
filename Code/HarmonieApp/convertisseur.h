@@ -289,29 +289,30 @@ std::vector<float> findBestHarmonieCompl(const std::vector<int>& histoHSV, std::
 
     return ImgOut;
 }
-std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
+
+std::vector<float> choosedCompl(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
     ImgOut.resize(nTaille3);
     int t = 0;
-    if(colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() ==0){
+    if (colorValue.hue() == 0 && colorValue.saturation() == 0 && colorValue.value() == 0) {
         t = teinte(histoHSV);
-    }else{
+    } else {
         t = colorValue.hue();
     }
 
     int tri1 = (t + 180) % 360;
-    for(int i = 0 ; i < nTaille3; i+=3){
-        float distT = teinteD(ImgIn[i], t);
-        float distT1 = teinteD(ImgIn[i], tri1);
+    for (int i = 0; i < nTaille3; i += 3) {
+        float distT = teinteD(ImgIn[i], tri1);
+        float distT1 = teinteD(ImgIn[i], t);
         float teinteInt;
         if (distT < distT1) {
             float T = 1.0f - (distT / 180.0f);
-            T = fmax(T,0.7);
-            teinteInt =interpolationT(ImgIn[i], distT, T);
+            T = fmax(T, 0.7);
+            teinteInt = interpolationT(ImgIn[i], tri1, T);
         } else {
             float T1 = 1.0f - (distT1 / 180.0f);
-            T1 = fmax(T1,0.7);
-            teinteInt = interpolationT(ImgIn[i], distT1, T1);
+            T1 = fmax(T1, 0.7);
+            teinteInt = interpolationT(ImgIn[i], t, T1);
         }
         ImgOut[i] = teinteInt;
         ImgOut[i + 1] = ImgIn[i + 1];
@@ -320,6 +321,7 @@ std::vector<float> choosedCompl(const std::vector<int>& histoHSV,std::vector<flo
 
     return ImgOut;
 }
+
 
 std::vector<float> choosedHarmonieTri(const std::vector<int>& histoHSV, std::vector<float> ImgIn, int nTaille3, QColor colorValue) {
     std::vector<float> ImgOut;
